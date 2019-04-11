@@ -1,0 +1,66 @@
+<h3 [ngClass]="{Online: ServerStatus==='Offline'}">
+    Server status is {{ServerStatus}}
+</h3>
+
+<div class="panel panel-primary">
+<div class="panel-heading">
+   {{ Title}}
+</div>
+<div class="panel panel-body">
+<div class="row">
+    <div class="col-md-2">{{Filter}}</div>
+    <div class="col-md-4"><input type="text" [(ngModel)]="UserInput"></div>
+</div>
+<h4>{{UserInput}}</h4>
+<h4>Star div width is {{statDivWidth}}</h4>
+<div class="row">
+    <div class="col-md-6">
+        <h4>{{NumberOfFilter}} {{(Product | Search:UserInput).length}} </h4></div>
+</div>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <th>
+                <tr>
+                  <button class="btn btn-success" (click) ="toggleImage()">{{ShowImage ? 'Hide Image' :'Show Image'}}</button>  
+                </tr>
+            </th>
+            <tr>
+                <td>Image</td>
+                <td>Name</td>
+                <td>Code</td>
+                <td>Date</td>
+                <td>price</td>
+                <td>starRating</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let prod of Product | Search:UserInput">
+
+                    <td><img [src]="prod.imageUrl" 
+                        [style.width.px]="ImageWidth"
+                        *ngIf="ShowImage" /></td>
+                    <td>{{prod.productName | MyUpper:'uper'}} </td>
+                    <td>{{prod.productCode | MyUpper:'lower' }}</td>
+                    <td>{{prod.releaseDate | date }}</td> 
+                    <td [ngStyle]="{'background-color':prod.price<20?'lightblue':'lightgreen'}" >
+                        {{prod.price | MyDiscount: '10' | currency: 'USD' }}
+                    </td>                   
+                    
+                    <!-- <td>{{prod.starRating}}</td>   -->
+
+                    <!-- Use component as attribute-->
+                    <!-- <div app-star></div> -->
+                    <!--Use component as class-->
+                    <!-- <div class="app-star"></div> -->
+                     <!--Use component as tag which is recomendate-->
+                     <!-- <td> {{prod.starRating}}</td> -->
+                    <app-star [rating]="prod.starRating" (ratingClicked)="onDataRecieve($event)"></app-star>
+                                     
+            </tr>
+            
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
